@@ -4,9 +4,8 @@
 \alias{account_information}
 \title{Get account information}
 \usage{
-account_information(account_id, token, domain = "api-fxpractice.oanda.com")
+account_information(oanda, account_id = NULL)
 }
 \description{
 Get account information
 }
-

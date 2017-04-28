@@ -4,9 +4,8 @@
 \alias{accounts}
 \title{Get accounts for a user}
 \usage{
-accounts(token, domain = "api-fxpractice.oanda.com")
+accounts(oanda)
 }
 \description{
 Get a list of accounts owned by the user
 }
-

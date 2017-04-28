@@ -3,20 +3,16 @@
 #' Get a list of accounts owned by the user
 #'
 #' @export
-accounts <- function(token, domain="api-fxpractice.oanda.com"){
-  url <- paste0("https://", domain, "/v1/accounts")
-  response <- httr::GET(url, header(token))
-  status <- http_status(response)
-  fromJSON(httr::content(response, "text"))[[1]]
+accounts <- function(oanda){
+  endpoint <- "/v1/accounts"
+  request(oanda, endpoint)
 }
 
 #' Get account information
 #'
 #' @export
-account_information <- function(account_id, token, domain="api-fxpractice.oanda.com")
+account_information <- function(oanda, account_id=NULL)
 {
-  url <- paste0("https://", domain, "/v1/accounts/", account_id)
-  response <- httr::GET(url, header(token))
-  status <- http_status(response)
-  as.data.frame(httr::content(response))
+  endpoint <- paste0("/v1/accounts/", account_id_inner(oanda, account_id))
+  request(oanda, endpoint)
 }

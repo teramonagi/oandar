@@ -8,4 +8,3 @@
 \description{
 Wrapper of OANDA API
 }
-

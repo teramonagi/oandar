@@ -2,7 +2,13 @@
 
 export(account_information)
 export(accounts)
+export(create_order)
 export(current_price)
+export(instrument_history)
 export(instrument_list)
+export(oanda_token)
+export(order_information)
+export(orders)
 import(httr)
 import(jsonlite)
+import(stringr)

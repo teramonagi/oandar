@@ -4,11 +4,9 @@
 \alias{instrument_list}
 \title{Get an instrument list}
 \usage{
-instrument_list(account_id, instruments, token,
-  domain = "api-fxpractice.oanda.com")
+instrument_list(oanda, instruments = NULL, account_id = NULL)
 }
 \description{
 Get a list of tradeable instruments (currency pairs, CFDs, and commodities)
 that are available for trading with the account specified.
 }
-

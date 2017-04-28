@@ -1,6 +1,6 @@
 Package: oandar
 Type: Package
-Title: What the Package Does (Title Case)
+Title: R wrapper for the [OANDA REST API](http://developer.oanda.com/rest-live/introduction/)
 Version: 0.1.0
 Author: Who wrote it
 Maintainer: Who to complain to <yourfault@somewhere.net>
@@ -9,7 +9,8 @@ License: What license is it under?
 LazyData: TRUE
 Imports:
   httr,
+  stringr,
   jsonlite
 Suggests:
     testthat
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
