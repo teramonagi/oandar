@@ -4,13 +4,16 @@
 #'that are available for trading with the account specified.
 #'
 #' @export
-instrument_list <- function(oanda, instruments=NULL, account_id=NULL)
+instrument_list <- function(oanda, instruments=NULL, fields=NULL, account_id=NULL)
 {
   endpoint <- "/v1/instruments"
-  query <- list(accountId = account_id_inner(oanda, account_id), instruments=paste(instruments, collapse=","))
+  query <- list(
+    accountId = account_id_inner(oanda, account_id),
+    instruments = to_cs_string(instruments),
+    fields = to_cs_string(fields)
+  )
   request(oanda, endpoint, method=GET, params=list(query=query))
 }
-
 
 #' @export
 current_price <- function(oanda, instruments)

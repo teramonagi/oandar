@@ -4,5 +4,5 @@
 #'
 #' @name oandar
 #' @docType package
-#' @import httr jsonlite stringr
+#' @import httr jsonlite stringr lubridate
 NULL

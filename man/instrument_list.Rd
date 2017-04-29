@@ -4,7 +4,8 @@
 \alias{instrument_list}
 \title{Get an instrument list}
 \usage{
-instrument_list(oanda, instruments = NULL, account_id = NULL)
+instrument_list(oanda, instruments = NULL, fields = NULL,
+  account_id = NULL)
 }
 \description{
 Get a list of tradeable instruments (currency pairs, CFDs, and commodities)

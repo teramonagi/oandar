@@ -24,16 +24,22 @@ oanda_token <- function(token, account_type)
   result
 }
 
+is_empty <- function(x){x == "" || is.null(x)}
+
 POST <- function(oanda, endpoint, params)
 {
   url <- paste0("https://", oanda$domain, endpoint)
-  httr::POST(url, config=header(oanda$token, params$headers), body=params$body, encode="form")
+  body <- Filter(Negate(is_empty), params$body)
+  print(body)
+  httr::POST(url, config=header(oanda$token, params$headers), body=body, encode="form")
 }
 
 GET <- function(oanda, endpoint, params)
 {
   url <- paste0("https://", oanda$domain, endpoint)
-  httr::GET(url, header(oanda$token), query=params$query)
+  query <- Filter(Negate(is_empty), params$query)
+  print(query)
+  httr::GET(url, header(oanda$token), query=query)
 }
 
 request <- function(oanda, endpoint, method=GET, params=NULL)
@@ -62,11 +68,20 @@ to_df <- function(response)
   df <- if(any(is_dfs)){
     indexes <- which(is_dfs)
     tmp <- dplyr::bind_rows(x[indexes])
-    cbind(tmp, dplyr::bind_cols(x[-indexes]))
+    if(length(x[-indexes]) == 0){
+      tmp
+    } else{
+      cbind(tmp, dplyr::bind_cols(x[-indexes]))
+    }
   } else{
     as.data.frame(t(unlist(x)))
   }
+  #Change column names
   colnames(df) <- tidy_string(colnames(df))
+  #Convert time
+  if("time" %in% colnames(df)){
+    df$time <- lubridate::ymd_hms(df$time)
+  }
   df
 }
 
@@ -74,3 +89,5 @@ account_id_inner <- function(oanda, account_id)
 {
   if(is.null(account_id)){oanda$account_id}else{account_id}
 }
+
+to_cs_string <- function(x){paste(x, collapse=",")}
