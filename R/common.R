@@ -15,34 +15,36 @@ domain <- function(account_type)
   }
 }
 
-#' @export
-oanda_token <- function(token, account_type)
-{
-  result <- list(token=token, account_type=account_type, domain=domain(account_type))
-  class(result) <- "oandar_token"
-  result$account_id <- accounts(result)$account_id[1]
-  result
-}
-
 is_empty <- function(x){x == "" || is.null(x)}
 
 POST <- function(oanda, endpoint, params)
 {
   url <- paste0("https://", oanda$domain, endpoint)
   body <- Filter(Negate(is_empty), params$body)
-  print(body)
   httr::POST(url, config=header(oanda$token, params$headers), body=body, encode="form")
+}
+
+PATCH <- function(oanda, endpoint, params)
+{
+  url <- paste0("https://", oanda$domain, endpoint)
+  body <- Filter(Negate(is_empty), params$body)
+  httr::PATCH(url, config=header(oanda$token, params$headers), body=body, encode="form")
+}
+
+DELETE <- function(oanda, endpoint, params)
+{
+  url <- paste0("https://", oanda$domain, endpoint)
+  httr::DELETE(url, config=header(oanda$token, params$headers), encode="form")
 }
 
 GET <- function(oanda, endpoint, params)
 {
   url <- paste0("https://", oanda$domain, endpoint)
   query <- Filter(Negate(is_empty), params$query)
-  print(query)
   httr::GET(url, header(oanda$token), query=query)
 }
 
-request <- function(oanda, endpoint, method=GET, params=NULL)
+request <- function(oanda, endpoint, method=GET, params=list(body=NULL, query=NULL))
 {
   response <- method(oanda, endpoint, params)
 

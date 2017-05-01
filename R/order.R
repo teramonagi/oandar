@@ -7,28 +7,42 @@ orders <- function(oanda, max_id=NULL, count=NULL, instrument=NULL, ids=NULL, ac
 }
 
 #' @export
-create_order <- function(oanda, instrument, units, side, type, expiry=NULL, price=NULL, lower_bound=NULL, upper_bound=NULL, stop_loss=NULL, take_profit=NULL, trailing_stop=NULL)
+create_order <- function(oanda, instrument, units, side, type, expiry=NULL, price=NULL, lower_bound=NULL, upper_bound=NULL, stop_loss=NULL, take_profit=NULL, trailing_stop=NULL, accound_id=NULL)
 {
-  endpoint <- "/v1/accounts"
-
-  body <- list(instrument=instrument, units=units, side=side, type=type, expiry=expiry, price=price)
-
+  endpoint <- sprintf("/v1/accounts/%s/orders", account_id_inner(oanda, account_id))
+  body <- list(instrument=instrument,
+               units=units,
+               side=side,
+               type=type,
+               expiry=expiry, price=price)
   request(oanda, endpoint, method=POST, params=list(body=body))
 }
 
 #' @export
 order_information <- function(oanda, order_id, accound_id=NULL)
 {
-  endpoint <- sprintf("/v1/accounts/%s/orders/%s", account_id, order_id)
+  endpoint <- sprintf("/v1/accounts/%s/orders/%s", account_id_inner(oanda, account_id), order_id)
   request(oanda, endpoint)
 }
 
-modify_order <- function()
+#' @export
+modify_order <- function(oanda, order_id, units = NULL, expiry=NULL, price=NULL, lower_bound=NULL, upper_bound=NULL, stop_loss=NULL, take_profit=NULL, trailing_stop=NULL, accound_id=NULL)
 {
-
+  endpoint <- sprintf("/v1/accounts/%s/orders/%s", account_id_inner(oanda, account_id), order_id)
+  body <- list(units=units,
+               expiry=expiry,
+               price=price,
+               lowerBound=lower_bound,
+               upperBound=upper_bound,
+               stopLoss=stop_loss,
+               takeProfit=take_profit,
+               trailingStop=trailing_stop)
+  request(oanda, endpoint, method=PATCH, params=list(body=body))
 }
 
-close_order <- function(token)
+#' @export
+close_order <- function(oanda, order_id, account_id=NULL)
 {
-
+  endpoint <- sprintf("/v1/accounts/%s/orders/%s", account_id_inner(oanda, account_id), order_id)
+  request(oanda, endpoint, method=DELETE)
 }
