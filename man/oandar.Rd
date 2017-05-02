@@ -3,12 +3,8 @@
 \docType{package}
 \name{oandar}
 \alias{oandar}
-\alias{oanda_token}
 \alias{oandar-package}
 \title{oandar}
-\usage{
-oanda_token(token, account_type)
-}
 \description{
-Wrapper of OANDA API
+R wrapper for the OANDA REST API
 }
