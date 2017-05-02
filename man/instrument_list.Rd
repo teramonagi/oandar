@@ -22,3 +22,7 @@ If not specified, the value which OANDA object has inside is used as a default (
 Get a list of tradeable instruments (currency pairs, CFDs, and commodities)
 that are available for trading with the account specified.
 }
+\details{
+See the following link for further information:
+\url{http://developer.oanda.com/rest-live/rates/}.
+}

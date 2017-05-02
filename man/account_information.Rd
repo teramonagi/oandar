@@ -14,4 +14,6 @@ If not specified, the value which OANDA object has inside is used as a default (
 }
 \description{
 Get account information
+See the following link for further information:
+\url{http://developer.oanda.com/rest-live/accounts/#getAccountInformation}.
 }
