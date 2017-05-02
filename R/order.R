@@ -37,7 +37,7 @@ orders <- function(oanda, max_id=NULL, count=NULL, instrument=NULL, ids=NULL, ac
 #' @param trailing_stop The trailing stop distance in pips, up to one decimal place.
 #'
 #' @export
-create_order <- function(oanda, instrument, units, side, type, expiry=NULL, price=NULL, lower_bound=NULL, upper_bound=NULL, stop_loss=NULL, take_profit=NULL, trailing_stop=NULL, accound_id=NULL)
+create_order <- function(oanda, instrument, units, side, type, expiry=NULL, price=NULL, lower_bound=NULL, upper_bound=NULL, stop_loss=NULL, take_profit=NULL, trailing_stop=NULL, account_id=NULL)
 {
   endpoint <- sprintf("/v1/accounts/%s/orders", account_id_inner(oanda, account_id))
   body <- list(instrument=instrument,
@@ -59,7 +59,7 @@ create_order <- function(oanda, instrument, units, side, type, expiry=NULL, pric
 #'   If not specified, the value which OANDA object has inside is used as a default (default value is \code{NULL}).
 #'
 #' @export
-order_information <- function(oanda, order_id, accound_id=NULL)
+order_information <- function(oanda, order_id, account_id=NULL)
 {
   endpoint <- sprintf("/v1/accounts/%s/orders/%s", account_id_inner(oanda, account_id), order_id)
   request(oanda, endpoint)
@@ -83,7 +83,7 @@ order_information <- function(oanda, order_id, accound_id=NULL)
 #' @param trailing_stop The trailing stop distance in pips, up to one decimal place.
 #'
 #' @export
-modify_order <- function(oanda, order_id, units = NULL, expiry=NULL, price=NULL, lower_bound=NULL, upper_bound=NULL, stop_loss=NULL, take_profit=NULL, trailing_stop=NULL, accound_id=NULL)
+modify_order <- function(oanda, order_id, units = NULL, expiry=NULL, price=NULL, lower_bound=NULL, upper_bound=NULL, stop_loss=NULL, take_profit=NULL, trailing_stop=NULL, 'account_id=NULL)
 {
   endpoint <- sprintf("/v1/accounts/%s/orders/%s", account_id_inner(oanda, account_id), order_id)
   body <- list(units=units,
