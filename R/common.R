@@ -73,7 +73,12 @@ tidy_df <- function(df)
 
 json_to_df <- function(json)
 {
-  as.data.frame(t(unlist(fromJSON(json))), stringsAsFactors=FALSE)
+  list_to_df(fromJSON(json))
+}
+
+list_to_df <- function(x)
+{
+  as.data.frame(t(unlist(x)), stringsAsFactors=FALSE)
 }
 
 to_df <- function(content)
@@ -81,17 +86,22 @@ to_df <- function(content)
   x <- fromJSON(content, flatten=TRUE)
   if(is.null(unlist(x))){return(NULL)}
 
-  is_dfs <- sapply(x, is.data.frame)
-  df <- if(any(is_dfs)){
-    indexes <- which(is_dfs)
-    tmp <- dplyr::bind_rows(x[indexes])
-    if(length(x[-indexes]) == 0){
-      tmp
-    } else{
-      cbind(tmp, dplyr::bind_cols(x[-indexes]))
-    }
+  df <- if(is.data.frame(x)){
+    x
   } else{
-    json_to_df(json)
+    is_dfs <- sapply(x, is.data.frame)
+    if(any(is_dfs)){
+      # Include data.frame as an element
+      indexes <- which(is_dfs)
+      tmp <- dplyr::bind_rows(x[indexes])
+      if(length(x[-indexes]) == 0){
+        tmp
+      } else{
+        cbind(tmp, dplyr::bind_cols(x[-indexes]))
+      }
+    } else{
+      list_to_df(x)
+    }
   }
   #Change column names
   tidy_df(df)
