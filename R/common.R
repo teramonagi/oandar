@@ -9,7 +9,7 @@ header <- function(token, headers=NULL)
 domain <- function(account_type)
 {
   if(account_type == "trade"){
-    list(rest="api-fxpractice.oanda.com", streaming="stream-fxpractice.oanda.com")
+    list(rest="api-fxtrade.oanda.com", streaming="stream-fxtrade.oanda.com")
   } else {
     list(rest="api-fxpractice.oanda.com", streaming="stream-fxpractice.oanda.com")
   }

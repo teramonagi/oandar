@@ -8,14 +8,16 @@ trade_list(oanda, max_id = NULL, count = NULL, instrument = NULL,
   ids = NULL, account_id = NULL)
 }
 \arguments{
-\item{max_id}{Optional The server will return trades with id less than or equal to this, in descending order (for pagination).}
+\item{max_id}{The server will return trades with id less than or equal to this, in descending order (for pagination).}
 
-\item{count}{Optional Maximum number of open trades to return. Default: 50 Max value: 500}
+\item{count}{Maximum number of open trades to return. Default: 50 Max value: 500}
 
-\item{instrument}{Optional Retrieve open trades for a specific instrument only Default: all}
+\item{instrument}{Retrieve open trades for a specific instrument only Default: all}
 
-\item{ids}{Optional A (URL encoded) comma separated list of trades to retrieve. Maximum number of ids: 50. No other parameter may be specified with the ids parameter.}
+\item{ids}{A (URL encoded) comma separated list of trades to retrieve. Maximum number of ids: 50. No other parameter may be specified with the ids parameter.}
 }
 \description{
-Get a list of open trades
+Get a list of open trades.
+See the following link for further information:
+\url{http://developer.oanda.com/rest-live/trades/#getListOpenTrades}
 }

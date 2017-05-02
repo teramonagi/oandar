@@ -8,16 +8,22 @@ transaction_history(oanda, max_id = NULL, min_id = NULL, count = NULL,
   instrument = NULL, ids = NULL, account_id = NULL)
 }
 \arguments{
-\item{max_id}{Optional The first transaction to get. The server will return transactions with id less than or equal to this, in descending order.}
+\item{max_id}{The first transaction to get. The server will return transactions with id less than or equal to this, in descending order.}
 
-\item{min_id}{Optional The last transaction to get. The server will return transactions with id greater or equal to this, in descending order.}
+\item{min_id}{The last transaction to get. The server will return transactions with id greater or equal to this, in descending order.}
 
-\item{count}{Optional The maximum number of transactions to return. The maximum value that can be specified is 500. By default, if count is not specified, a maximum of 50 transactions will be fetched. Note: Transactions requests with the count parameter specified is rate limited to 1 per every 60 seconds.}
+\item{count}{The maximum number of transactions to return. The maximum value that can be specified is 500.
+By default, if count is not specified, a maximum of 50 transactions will be fetched. Note: Transactions requests with the count parameter specified is rate limited to 1 per every 60 seconds.}
 
-\item{instrument}{Optional Retrieve transactions for a specific instrument only. Default: all.}
+\item{instrument}{Retrieve transactions for a specific instrument only. Default: all.}
 
-\item{ids}{Optional An URL encoded comma (%2C) separated list of transaction ids to retrieve. Maximum number of ids: 50. No other parameter may be specified with the ids parameter.}
+\item{ids}{An URL encoded comma (%2C) separated list of transaction ids to retrieve. Maximum number of ids: 50. No other parameter may be specified with the ids parameter.}
+
+\item{account_id}{string. The account id to fetch the list of tradeable instruments for. This value will be used if it is specified.
+If not specified, the value which OANDA object has inside is used as a default.}
 }
 \description{
 Get transaction history
+See the following link for further information:
+\url{http://developer.oanda.com/rest-live/transaction-history/#getTransactionHistory}
 }
