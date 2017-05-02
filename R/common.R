@@ -9,9 +9,9 @@ header <- function(token, headers=NULL)
 domain <- function(account_type)
 {
   if(account_type == "trade"){
-    "api-fxpractice.oanda.com"
+    list(rest="api-fxpractice.oanda.com", streaming="stream-fxpractice.oanda.com")
   } else {
-    "api-fxpractice.oanda.com"
+    list(rest="api-fxpractice.oanda.com", streaming="stream-fxpractice.oanda.com")
   }
 }
 
@@ -19,27 +19,27 @@ is_empty <- function(x){x == "" || is.null(x)}
 
 POST <- function(oanda, endpoint, params)
 {
-  url <- paste0("https://", oanda$domain, endpoint)
+  url <- paste0("https://", oanda$domain$rest, endpoint)
   body <- Filter(Negate(is_empty), params$body)
   httr::POST(url, config=header(oanda$token, params$headers), body=body, encode="form")
 }
 
 PATCH <- function(oanda, endpoint, params)
 {
-  url <- paste0("https://", oanda$domain, endpoint)
+  url <- paste0("https://", oanda$domain$rest, endpoint)
   body <- Filter(Negate(is_empty), params$body)
   httr::PATCH(url, config=header(oanda$token, params$headers), body=body, encode="form")
 }
 
 DELETE <- function(oanda, endpoint, params)
 {
-  url <- paste0("https://", oanda$domain, endpoint)
+  url <- paste0("https://", oanda$domain$rest, endpoint)
   httr::DELETE(url, config=header(oanda$token, params$headers), encode="form")
 }
 
 GET <- function(oanda, endpoint, params)
 {
-  url <- paste0("https://", oanda$domain, endpoint)
+  url <- paste0("https://", oanda$domain$rest, endpoint)
   query <- Filter(Negate(is_empty), params$query)
   httr::GET(url, header(oanda$token), query=query)
 }
@@ -50,7 +50,7 @@ request <- function(oanda, endpoint, method=GET, params=list(body=NULL, query=NU
 
   status <- http_status(response)
 
-  to_df(response)
+  to_df(httr::content(response, "text", encoding="utf-8"))
 }
 
 
@@ -61,9 +61,24 @@ tidy_string <- function(x)
   tolower(x)
 }
 
-to_df <- function(response)
+tidy_df <- function(df)
 {
-  x <- fromJSON(httr::content(response, "text", encoding="utf-8"))
+  colnames(df) <- tidy_string(colnames(df))
+  #Convert time
+  if("time" %in% colnames(df)){
+    df$time <- lubridate::ymd_hms(df$time)
+  }
+  df
+}
+
+json_to_df <- function(json)
+{
+  as.data.frame(t(unlist(fromJSON(json))), stringsAsFactors=FALSE)
+}
+
+to_df <- function(content)
+{
+  x <- fromJSON(content, flatten=TRUE)
   if(is.null(unlist(x))){return(NULL)}
 
   is_dfs <- sapply(x, is.data.frame)
@@ -76,15 +91,10 @@ to_df <- function(response)
       cbind(tmp, dplyr::bind_cols(x[-indexes]))
     }
   } else{
-    as.data.frame(t(unlist(x)))
+    json_to_df(json)
   }
   #Change column names
-  colnames(df) <- tidy_string(colnames(df))
-  #Convert time
-  if("time" %in% colnames(df)){
-    df$time <- lubridate::ymd_hms(df$time)
-  }
-  df
+  tidy_df(df)
 }
 
 account_id_inner <- function(oanda, account_id)

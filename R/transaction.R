@@ -13,9 +13,18 @@ transaction_history <- function(oanda, max_id=NULL, min_id=NULL, count=NULL, ins
   request(oanda, endpoint, method=GET, params=list(query=query))
 
 }
+
 #' @export
 transaction_information <- function(oanda, transaction_id, account_id=NULL)
 {
   endpoint <- sprintf("/v1/accounts/%s/transactions/%s", account_id_inner(oanda, account_id), transaction_id)
   request(oanda, endpoint)
+}
+
+#' @export
+transaction_history_all <- function(oanda, account_id=NULL)
+{
+  endpoint <- sprintf("/v1/accounts/%s/alltransactions", account_id_inner(oanda, account_id))
+  response <- GET(oanda, endpoint, list(body=NULL, query=NULL))
+  httr::headers(response)$location
 }
